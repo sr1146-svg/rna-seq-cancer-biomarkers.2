@@ -1,49 +1,54 @@
-# History files
-.Rhistory
-.Rapp.history
+# Raw & reference data (keep out of git)
+data/raw/*
+data/reference/*
+!data/raw/.gitkeep
+!data/reference/.gitkeep
+*.fastq.gz
+*.fq.gz
+*.bam
+*.bai
+*.sam
+*.cram
+*.crai
+*.vcf
+*.vcf.gz
+*.tbi
+*.fa
+*.fai
+*.gtf
+*.gff
+*.dict
+*.bt2
+*.bwt
+*.sa
+*.amb
+*.ann
+*.pac
+*.idx
+*.h5
+*.hdf5
 
-# Session Data files
-.RData
-.RDataTmp
+# Workflow engine caches
+.snakemake/
+.nextflow*
+work/
 
-# User-specific files
-.Ruserdata
+# Analysis scratch
+analysis/*
+!analysis/.gitkeep
 
-# Example code in package build process
-*-Ex.R
-
-# Output files from R CMD build
-/*.tar.gz
-
-# Output files from R CMD check
-/*.Rcheck/
-
-# RStudio files
+# Notebooks & R
+.ipynb_checkpoints/
 .Rproj.user/
+.Rhistory
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+# Python
+__pycache__/
+*.pyc
+.venv/
+.env/
+.envs/
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
-
-# knitr and R markdown default cache directories
-*_cache/
-/cache/
-
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
-
-# R Environment Variables
-.Renviron
-
-# pkgdown site
-docs/
-
-# translation temp files
-po/*~
-
-# RStudio Connect folder
-rsconnect/
+# OS
+.DS_Store
+Thumbs.db
