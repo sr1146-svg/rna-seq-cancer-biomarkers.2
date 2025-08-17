@@ -1,0 +1,9 @@
+# Global configuration for the workflow
+samples_tsv: config/samples.tsv
+results_dir: results
+threads: 4
+
+# Example references (put the actual files under data/reference/ and do NOT commit them)
+reference:
+  genome_fa: data/reference/genome.fa
+  annotation_gtf: data/reference/genes.gtf

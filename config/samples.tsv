@@ -1,0 +1,5 @@
+sample	condition	fastq1	fastq2
+SRR1234	control	data/raw/SRR1234_R1.fastq.gz	data/raw/SRR1234_R2.fastq.gz
+SRR5678	treated	data/raw/SRR5678_R1.fastq.gz	data/raw/SRR5678_R2.fastq.gz
+# For single-end data, leave fastq2 empty:
+# SRR9999	control	data/raw/SRR9999.fastq.gz

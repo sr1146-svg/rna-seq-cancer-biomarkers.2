@@ -1,0 +1,56 @@
+# Use config file
+configfile: "config/config.yaml"
+
+import csv, os
+
+# Load samples
+SAMPLE_TO_FASTQS = {}
+with open(config["samples_tsv"], newline="") as f:
+    reader = csv.DictReader(f, delimiter="\t")
+    for row in reader:
+        if row["sample"].startswith("#") or row["sample"] == "sample":
+            continue
+        fastqs = [row["fastq1"]] if row.get("fastq1") else []
+        if row.get("fastq2"):
+            if row["fastq2"].strip():
+                fastqs.append(row["fastq2"])
+        SAMPLE_TO_FASTQS[row["sample"]] = [fq for fq in fastqs if fq]
+
+SAMPLES = sorted(SAMPLE_TO_FASTQS.keys())
+RESULTS_DIR = config.get("results_dir", "results")
+
+rule all:
+    input:
+        os.path.join(RESULTS_DIR, "qc", "multiqc_report.html")
+
+# Run FastQC for each sample (on 1 or 2 FASTQs). We create a lightweight flag file in analysis/.
+rule fastqc:
+    input:
+        lambda wildcards: SAMPLE_TO_FASTQS[wildcards.sample]
+    output:
+        touch("analysis/qc/{sample}.fastqc.done")
+    params:
+        outdir = lambda wc: os.path.join(RESULTS_DIR, "qc")
+    threads: config.get("threads", 1)
+    conda:
+        "workflow/envs/fastqc.yaml"
+    shell:
+        r'''
+        mkdir -p {params.outdir}
+        fastqc -o {params.outdir} {input}
+        touch {output}
+        '''
+
+# Aggregate QC with MultiQC
+rule multiqc:
+    input:
+        expand("analysis/qc/{sample}.fastqc.done", sample=SAMPLES)
+    output:
+        os.path.join(RESULTS_DIR, "qc", "multiqc_report.html")
+    conda:
+        "workflow/envs/multiqc.yaml"
+    shell:
+        r'''
+        mkdir -p {RESULTS_DIR}/qc
+        multiqc -o {RESULTS_DIR}/qc {RESULTS_DIR}/qc
+        '''

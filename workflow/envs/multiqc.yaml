@@ -1,0 +1,4 @@
+name: multiqc-env
+channels: [conda-forge, bioconda]
+dependencies:
+  - multiqc
